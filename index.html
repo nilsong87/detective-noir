@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detective Noir - Investigação de Crimes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>CARREGANDO INVESTIGAÇÃO...</h2>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-menu" class="main-menu">
+        <header class="game-header">
+            <h1 class="game-title animate__animated animate__fadeIn">DETECTIVE NOIR</h1>
+            <p class="game-subtitle animate__animated animate__fadeIn animate__delay-1s">UNIDADE DE CRIMES HEDIONDOS</p>
+        </header>
+        
+        <nav class="menu-options">
+            <button id="new-game" class="menu-btn animate__animated animate__fadeIn animate__delay-2s">NOVA INVESTIGAÇÃO</button>
+            <button id="continue-game" class="menu-btn animate__animated animate__fadeIn animate__delay-3s" disabled>CONTINUAR</button>
+            <button id="tutorial" class="menu-btn animate__animated animate__fadeIn animate__delay-4s">TUTORIAL</button>
+            <button id="credits" class="menu-btn animate__animated animate__fadeIn animate__delay-5s">CRÉDITOS</button>
+        </nav>
+        
+        <div class="menu-footer">
+            <p class="version-info">v1.0.0 | © 2023 Unidade de Crimes Especiais</p>
+        </div>
+    </div>
+
+    <div id="game-container" class="game-container hidden">
+        <header class="game-header">
+            <div class="header-left">
+                <h2 id="case-title">Caso #001</h2>
+                <p id="case-subtitle">Assassinato no Hotel Luxor</p>
+            </div>
+            <div class="header-right">
+                <div class="game-stats">
+                    <span class="stat"><span id="day">1</span>D</span>
+                    <span class="stat"><span id="hours">72</span>H</span>
+                    <span class="stat"><span id="clues">0</span>/<span id="total-clues">10</span> PISTAS</span>
+                </div>
+                <div class="difficulty-meter">
+                    <span>DIFICULDADE:</span>
+                    <div class="meter">
+                        <div class="level level-1 active"></div>
+                        <div class="level level-2"></div>
+                        <div class="level level-3"></div>
+                        <div class="level level-4"></div>
+                        <div class="level level-5"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="game-main">
+            <div class="world-map-container">
+                <div id="world-map" class="world-map"></div>
+                <div class="map-controls">
+                    <button id="zoom-in" class="map-btn">+</button>
+                    <button id="zoom-out" class="map-btn">-</button>
+                    <button id="center-map" class="map-btn">⌂</button>
+                </div>
+            </div>
+            
+            <div class="game-panels">
+                <div class="panel-left">
+                    <div class="panel-section case-details">
+                        <h3>DETALHES DO CASO</h3>
+                        <div id="case-details" class="case-text">
+                            <p>Vítima: <span class="victim-name">Jonathan Blackwell</span></p>
+                            <p>Idade: <span class="victim-age">42</span></p>
+                            <p>Local: <span class="crime-location">Hotel Luxor, Nova York</span></p>
+                            <p>Hora: <span class="crime-time">02:15 AM</span></p>
+                            <p class="crime-description">O corpo foi encontrado no quarto 314 do hotel. Vítima apresentava múltiplas facadas e sinais de luta. Objeto cortante não encontrado no local.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-section suspect-list">
+                        <h3>SUSPEITOS</h3>
+                        <div id="suspects-container" class="suspects-container">
+                            <!-- Suspeitos serão adicionados dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel-right">
+                    <div class="panel-section clue-log">
+                        <h3>REGISTRO DE PISTAS</h3>
+                        <div id="clue-log" class="clue-log-container">
+                            <!-- Pistas serão adicionadas dinamicamente -->
+                        </div>
+                    </div>
+                    
+                    <div class="panel-section action-panel">
+                        <h3>AÇÕES</h3>
+                        <div class="action-buttons">
+                            <button id="travel-btn" class="action-btn">VIAJAR</button>
+                            <button id="interrogate-btn" class="action-btn">INTERROGAR</button>
+                            <button id="analyze-btn" class="action-btn">ANALISAR</button>
+                            <button id="accuse-btn" class="action-btn">ACUSAR</button>
+                        </div>
+                        <div class="time-controls">
+                            <button id="pause-btn" class="time-btn active">⏸</button>
+                            <button id="play-btn" class="time-btn">▶</button>
+                            <button id="fast-forward-btn" class="time-btn">⏩</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="travel-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>SELECIONE UM DESTINO</h2>
+            <div class="city-grid">
+                <!-- Cidades serão adicionadas dinamicamente -->
+            </div>
+            <div class="modal-footer">
+                <p>Tempo de viagem: <span id="travel-time">8</span> horas</p>
+                <button id="confirm-travel" class="modal-btn">VIAJAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="interrogate-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>INTERROGATÓRIO</h2>
+            <div id="suspect-interview" class="interview-container">
+                <!-- Conteúdo do interrogatório será adicionado dinamicamente -->
+            </div>
+            <div class="modal-footer">
+                <button id="ask-alibi" class="modal-btn question-btn">PERGUNTAR SOBRE ALIBI</button>
+                <button id="ask-motive" class="modal-btn question-btn">PERGUNTAR SOBRE MOTIVO</button>
+                <button id="ask-relationship" class="modal-btn question-btn">PERGUNTAR SOBRE RELACIONAMENTO</button>
+                <button id="close-interrogate" class="modal-btn">FINALIZAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="accuse-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>FAZER ACUSAÇÃO</h2>
+            <p>Você está prestes a acusar um suspeito. Certifique-se de ter evidências suficientes.</p>
+            <div id="accuse-suspects" class="suspects-container">
+                <!-- Suspeitos para acusação serão adicionados dinamicamente -->
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-accuse" class="modal-btn danger-btn">CONFIRMAR ACUSAÇÃO</button>
+                <button id="cancel-accuse" class="modal-btn">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="case-complete-modal" class="modal hidden">
+        <div class="modal-content case-result">
+            <h2 id="result-title">CASO RESOLVIDO!</h2>
+            <div id="result-content" class="result-details">
+                <!-- Resultados serão adicionados dinamicamente -->
+            </div>
+            <div class="modal-footer">
+                <button id="next-case" class="modal-btn">PRÓXIMO CASO</button>
+                <button id="return-hq" class="modal-btn">RETORNAR AO QG</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal hidden">
+        <div class="modal-content tutorial-content">
+            <span class="close-modal">&times;</span>
+            <h2>TUTORIAL</h2>
+            <div class="tutorial-steps">
+                <div class="tutorial-step active">
+                    <h3>INTRODUÇÃO</h3>
+                    <p>Bem-vindo à Unidade de Crimes Hediondos. Como detetive, seu trabalho é resolver casos complexos seguindo pistas, interrogando suspeitos e reunindo evidências.</p>
+                    <img src="assets/images/tutorial/intro.png" alt="Introdução">
+                </div>
+                <div class="tutorial-step">
+                    <h3>O MAPA</h3>
+                    <p>Use o mapa para viajar entre diferentes locais em busca de pistas. Cada local pode conter informações valiosas ou testemunhas para interrogatório.</p>
+                    <img src="assets/images/tutorial/map.png" alt="Mapa">
+                </div>
+                <div class="tutorial-step">
+                    <h3>PISTAS E SUSPEITOS</h3>
+                    <p>Colete pistas para preencher seu registro. Cada suspeito tem um alibi, motivo e relação com a vítima que você precisa investigar.</p>
+                    <img src="assets/images/tutorial/clues.png" alt="Pistas">
+                </div>
+                <div class="tutorial-step">
+                    <h3>INTERROGATÓRIO</h3>
+                    <p>Interrogue suspeitos para descobrir inconsistências em suas histórias. Perguntas inteligentes podem revelar informações cruciais.</p>
+                    <img src="assets/images/tutorial/interrogate.png" alt="Interrogatório">
+                </div>
+                <div class="tutorial-step">
+                    <h3>ACUSAÇÃO</h3>
+                    <p>Quando tiver evidências suficientes, acuse o culpado. Acusações prematuras podem resultar em libertação do verdadeiro criminoso.</p>
+                    <img src="assets/images/tutorial/accuse.png" alt="Acusação">
+                </div>
+            </div>
+            <div class="tutorial-controls">
+                <button id="prev-tutorial" class="modal-btn">ANTERIOR</button>
+                <button id="next-tutorial" class="modal-btn">PRÓXIMO</button>
+                <button id="finish-tutorial" class="modal-btn">FINALIZAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/game.js"></script>
+</body>
+</html>
