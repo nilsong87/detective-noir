@@ -160,6 +160,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background: url('../assets/images/bg-pattern.png') repeat;
+    background-size: cover;
 }
 
 .game-header {
@@ -238,7 +239,8 @@ body {
 .world-map-container {
     flex: 2;
     position: relative;
-    background-color: var(--secondary-color);
+    background-image: url(../assets/images/world-map.jpg);
+    background-size: contain;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
