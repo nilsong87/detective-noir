@@ -2,8 +2,8 @@ class SoundManager {
     constructor() {
         this.sounds = {
             click: this.createSound('assets/sounds/click.wav', 0.20),
-            travel: this.createSound('assets/sounds/travel.wav', 0.20),
-            clue: this.createSound('assets/sounds/clue.wav', 0.20),
+            travel: this.createSound('assets/sounds/travel.wav', 0.6),
+            clue: this.createSound('assets/sounds/clue.wav', 0.6),
             success: this.createSound('assets/sounds/success.wav', 0.20),
             failure: this.createSound('assets/sounds/failure.wav', 0.20),
             mainTheme: this.createSound('assets/sounds/main_theme.mp3', 0.0, true)
