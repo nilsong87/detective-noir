@@ -239,8 +239,9 @@ body {
 .world-map-container {
     flex: 2;
     position: relative;
-    background-image: url(../assets/images/world-map.jpg);
-    background-size: contain;
+    background-image: url('../assets/images/world-map.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
@@ -251,7 +252,9 @@ body {
     height: 100%;
     background-image: url('../assets/images/world-map.jpg');
     background-size: cover;
-    background-position: center;
+    background-repeat: no-repeat;
+    background-position: center center;
+        
     transition: transform 0.3s ease;
 }
 

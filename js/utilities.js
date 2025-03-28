@@ -1,38 +1,118 @@
 class SoundManager {
     constructor() {
         this.sounds = {
-            click: this.createSound('assets/sounds/click.wav', 0.2),
-            travel: this.createSound('assets/sounds/travel.wav', 0.10),
-            clue: this.createSound('assets/sounds/clue.wav', 0.16),
-            success: this.createSound('assets/sounds/success.wav', 0.2),
-            failure: this.createSound('assets/sounds/failure.wav', 0.2),
-            mainTheme: this.createSound('assets/sounds/main_theme.mp3', 0, true)
+            click: this.createSound('assets/sounds/click.wav', 0.20),
+            travel: this.createSound('assets/sounds/travel.wav', 0.20),
+            clue: this.createSound('assets/sounds/clue.wav', 0.20),
+            success: this.createSound('assets/sounds/success.wav', 0.20),
+            failure: this.createSound('assets/sounds/failure.wav', 0.20),
+            mainTheme: this.createSound('assets/sounds/main_theme.mp3', 0.20, true)
         };
+        this.mainThemeId = null;
+        this.isMainThemePlaying = false;
+        this.pausedSeek = 0;
     }
 
     createSound(src, volume, loop = false) {
         return new Howl({
             src: [src],
             volume,
-            loop
+            loop,
+            onplayerror: function() {
+                console.error('Error playing sound:', src);
+                this.once('unlock', function() {
+                    this.play();
+                });
+            }
         });
     }
 
     play(soundName) {
         const sound = this.sounds[soundName];
-        if (sound) {
-            sound.play();
-        } else {
+        if (!sound) {
             console.warn(`Sound "${soundName}" not found.`);
+            return;
+        }
+
+        if (soundName === 'mainTheme') {
+            if (!this.isMainThemePlaying) {
+                this.mainThemeId = sound.play();
+                sound.seek(this.pausedSeek);
+                sound.fade(0, 0.3, 1000, this.mainThemeId);
+                this.isMainThemePlaying = true;
+            }
+        } else {
+            sound.play();
         }
     }
 
     stop(soundName) {
         const sound = this.sounds[soundName];
-        if (sound) {
-            sound.stop();
-        } else {
+        if (!sound) {
             console.warn(`Sound "${soundName}" not found.`);
+            return;
+        }
+
+        if (soundName === 'mainTheme') {
+            if (this.isMainThemePlaying) {
+                sound.fade(0.3, 0, 1000, this.mainThemeId);
+                setTimeout(() => {
+                    sound.stop(this.mainThemeId);
+                    this.isMainThemePlaying = false;
+                    this.pausedSeek = 0;
+                }, 1000);
+            }
+        } else {
+            sound.stop();
+        }
+    }
+
+    pause(soundName) {
+        const sound = this.sounds[soundName];
+        if (!sound) {
+            console.warn(`Sound "${soundName}" not found.`);
+            return;
+        }
+
+        if (soundName === 'mainTheme') {
+            if (this.isMainThemePlaying) {
+                this.pausedSeek = sound.seek(this.mainThemeId);
+                sound.pause(this.mainThemeId);
+                this.isMainThemePlaying = false;
+            }
+        } else {
+            sound.pause();
+        }
+    }
+
+    resume(soundName) {
+        const sound = this.sounds[soundName];
+        if (!sound) {
+            console.warn(`Sound "${soundName}" not found.`);
+            return;
+        }
+
+        if (soundName === 'mainTheme') {
+            if (!this.isMainThemePlaying) {
+                if (this.mainThemeId === null) {
+                    this.mainThemeId = sound.play();
+                } else {
+                    sound.play(this.mainThemeId);
+                }
+                sound.seek(this.pausedSeek);
+                sound.fade(0, 0.3, 1000, this.mainThemeId);
+                this.isMainThemePlaying = true;
+            }
+        } else {
+            sound.play();
+        }
+    }
+
+    toggleMainTheme() {
+        if (this.isMainThemePlaying) {
+            this.pause('mainTheme');
+        } else {
+            this.resume('mainTheme');
         }
     }
 
