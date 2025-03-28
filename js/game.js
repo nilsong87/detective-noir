@@ -885,7 +885,7 @@ class DetectiveNoirGame {
     showCredits() {
         try {
             this.soundManager.play('click');
-            alert("Detective Noir\nDesenvolvido por [Seu Nome]\n© 2023 Unidade de Crimes Especiais\n\nAssets utilizados:\n- Mapa: Freepik\n- Sons: Freesound.org\n- Ícones: Font Awesome");
+            alert("Detective Noir\nDesenvolvido por Nilson Gomes\n© 2025 Unidade de Crimes Especiais\n\nAssets utilizados:\n- Mapa: Freepik\n- Sons: Freesound.org\n- Ícones: Font Awesome");
         } catch (error) {
             console.error('Erro ao mostrar créditos:', error);
         }

@@ -6,7 +6,7 @@ class SoundManager {
             clue: this.createSound('assets/sounds/clue.wav', 0.16),
             success: this.createSound('assets/sounds/success.wav', 0.2),
             failure: this.createSound('assets/sounds/failure.wav', 0.2),
-            mainTheme: this.createSound('assets/sounds/main_theme.mp3', 2, true)
+            mainTheme: this.createSound('assets/sounds/main_theme.mp3', 0, true)
         };
     }
 
